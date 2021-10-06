@@ -29,12 +29,12 @@ RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
 RUN apt-get update \
     && export DEBIAN_FRONTEND=noninteractive \
     && apt-get -y install --no-install-recommends software-properties-common libssl-dev libxml2-dev libcurl4-openssl-dev python3-pip pandoc \
-    && apt-get -y install --no-install-recommends libfreetype6-dev libfontconfig1-dev tk \
+    && apt-get -y install --no-install-recommends libfreetype6-dev libfontconfig1-dev tk libgit2-dev \
     && apt-get autoremove -y && apt-get clean -y && rm -rf /var/lib/apt/lists/*
 
 # install R packages needed for VSCode interaction and package management
-RUN install2.r languageserver renv remotes
-RUN installGithub.r nx10/httpgd
+RUN install2.r languageserver renv remotes golem shinipsum httpgd shinyWidgets bslib rmarkdown shinyvalidate DT reactable esquisse cachem gert
+RUN installGithub.r matt-dray/ActionSquirrel ColinFay/brochure ColinFay/glouton 
 
 # install radian via python and pip3
 RUN apt-get update \
