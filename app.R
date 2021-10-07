@@ -5,7 +5,11 @@ library(DT)
 library(ggplot2)
 library(plotly)
 
-random_plot <- random_ggplot("bar")
+# source module scripts
+source("page1.R")
+source("page2.R")
+
+#random_plot <- random_ggplot("bar")
 
 # Creating a navlink
 nav_links <- tags$ul(
@@ -20,34 +24,34 @@ nav_links <- tags$ul(
   )
 )
 
+tab_links <- tags$div(
+  class = "tabbable",
+  tags$ul(
+    class = "nav nav-tabs",
+    tags$li(
+      class = "active",
+      tags$a(href = "/", "home", `data-toggle` = "tab", `data-bs-toggle`="tab", `data-value` = "home") 
+    ),
+    tags$li(
+      tags$a(href = "/page2", "page2", `data-toggle` = "tab", `data-bs-toggle`="tab", `data-value` = "page2") 
+    )
+    # tags$li(
+    #   tags$a(href = "/page2", "page2"), 
+    # ),
+    # tags$li(
+    #   tags$a(href = "/contact", "contact"), 
+    # )
+  )
+)
+
 page_1 <- function(){
   page(
     href = "/",
     ui = function(request){
-      tagList(
-        h1("Prototype Live on Twitch"),
-        nav_links,
-        fluidRow(
-          column(
-            width = 12,
-            random_DT(
-              nrow = 10,
-              ncol = 5
-            )
-          ),
-        ),
-        fluidRow(
-          column(
-            width = 12,
-            plotOutput("plot")
-          )
-        )
-      )
+      page1_ui("page1")
     },
     server = function(input, output, session){
-      output$plot <- renderPlot({
-        random_plot
-      })
+      callModule(page1_server, "page1")
     }
   )
 }
@@ -56,46 +60,16 @@ page_2 <- function(){
   page(
     href = "/page2",
     ui =  function(request){
-      tagList(
-        h1("This is my second page"),
-        nav_links,
-        plotOutput("plot")
-      )
+      page2_ui("page2")
     }, 
     server = function(input, output, session){
-      output$plot <- renderPlot({
-        plot(mtcars)
-      })
+      callModule(page2_server, "page2")
     }
-  )
-}
-
-page_contact <- function(){
-  page(
-    href = "/contact",
-    ui =  tagList(
-      h1("Contact us"),
-      nav_links,
-      tags$ul(
-        tags$li("Here"),
-        tags$li("There")
-      )
-    )
   )
 }
 
 brochureApp(
   # Pages
   page_1(),
-  page_2(),
-  page_contact(),
-  # Redirections
-  redirect(
-    from = "/page3",
-    to =  "/page2"
-  ),
-  redirect(
-    from = "/page4",
-    to =  "/"
-  )
+  page_2()
 )
