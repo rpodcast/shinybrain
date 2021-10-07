@@ -1,7 +1,7 @@
 version: '3.4'
 
 services:
-  rstudiopreview:
+  shinylearning:
     build:
       context: ./rstudio_docker
     container_name: ${CONTAINER_NAME}
