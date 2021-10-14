@@ -1,6 +1,11 @@
-page1_ui <- function(id) {
+#' @param id module namespace id
+#' @param root_dir optional defintion of the root directory of this app
+page1_ui <- function(id, root_dir = NULL) {
     ns <- NS(id)
-
+    if (is.null(root_dir)) {
+      root_dir <- getwd()
+    } 
+    
     tagList(
         h1("Prototype Live on Twitch"),
         nav_links,
@@ -8,7 +13,7 @@ page1_ui <- function(id) {
         fluidRow(
           column(
             width = 12,
-            shiny::includeMarkdown("page1_intro.md")
+            shiny::includeMarkdown(file.path(root_dir, "page1_intro.md"))
           )
         ),
         fluidRow(
@@ -29,7 +34,7 @@ page1_ui <- function(id) {
       )
 }
 
-page1_server <- function(input, output, session) {
+page1_server <- function(input, output, session, root_dir = NULL) {
   
   random_plot <- shinipsum::random_ggplot("bar")
 

@@ -6,8 +6,8 @@ library(ggplot2)
 library(plotly)
 
 # source module scripts
-source("page1.R")
-source("page2.R")
+source("page1/page1.R")
+source("page2/page2.R")
 
 #random_plot <- random_ggplot("bar")
 
@@ -18,9 +18,6 @@ nav_links <- tags$ul(
   ),
   tags$li(
     tags$a(href = "/page2", "page2"), 
-  ),
-  tags$li(
-    tags$a(href = "/contact", "contact"), 
   )
 )
 
@@ -48,10 +45,10 @@ page_1 <- function(){
   page(
     href = "/",
     ui = function(request){
-      page1_ui("page1")
+      page1_ui("page1", root_dir = file.path(here::here(), "page1"))
     },
     server = function(input, output, session){
-      callModule(page1_server, "page1")
+      callModule(page1_server, "page1", root_dir = file.path(here::here(), "page1"))
     }
   )
 }
