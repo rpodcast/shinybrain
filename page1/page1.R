@@ -1,7 +1,5 @@
-#' @param id module namespace id
 #' @param root_dir optional defintion of the root directory of this app
-page1_ui <- function(id, root_dir = NULL) {
-    ns <- NS(id)
+page1_ui <- function(root_dir = NULL) {
     if (is.null(root_dir)) {
       root_dir <- getwd()
     } 
@@ -28,7 +26,7 @@ page1_ui <- function(id, root_dir = NULL) {
         fluidRow(
           column(
             width = 12,
-            plotOutput(ns("plot"))
+            plotOutput("plot")
           )
         )
       )

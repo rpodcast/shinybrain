@@ -1,5 +1,4 @@
-page2_ui <- function(id) {
-    ns <- NS(id)
+page2_ui <- function() {
 
     tagList(
         h1("More polish"),
@@ -19,17 +18,16 @@ page2_ui <- function(id) {
         fluidRow(
           column(
             width = 12,
-            DT::DTOutput(ns("mytable")
+            DT::DTOutput("mytable")
           )
         ),
         fluidRow(
           column(
             width = 12,
-            plotOutput(ns("plot"))
+            plotOutput("plot")
           )
         )
       )
-    )
 }
 
 page2_server <- function(input, output, session) {

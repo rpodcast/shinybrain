@@ -45,10 +45,10 @@ page_1 <- function(){
   page(
     href = "/",
     ui = function(request){
-      page1_ui("page1", root_dir = file.path(here::here(), "page1"))
+      page1_ui(root_dir = file.path(here::here(), "page1"))
     },
     server = function(input, output, session){
-      callModule(page1_server, "page1", root_dir = file.path(here::here(), "page1"))
+      page1_server(input, output, session, root_dir = file.path(here::here(), "page1"))
     }
   )
 }
@@ -57,10 +57,10 @@ page_2 <- function(){
   page(
     href = "/page2",
     ui =  function(request){
-      page2_ui("page2")
+      page2_ui()
     }, 
     server = function(input, output, session){
-      callModule(page2_server, "page2")
+      page2_server(input, output, session)
     }
   )
 }
