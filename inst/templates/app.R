@@ -25,9 +25,6 @@ page_1 <- function() {
       tagList(
         tags$head(
           includeCSS("www/navigation.css")
-          # tags$style(
-          #   includeCSS("www/navigation.css")
-          # )
         ),
         page1_ui()
       )
