@@ -33,7 +33,7 @@ RUN apt-get update \
     && apt-get autoremove -y && apt-get clean -y && rm -rf /var/lib/apt/lists/*
 
 # install R packages needed for VSCode interaction and package management
-RUN install2.r languageserver renv remotes golem shinipsum httpgd shinyWidgets bslib rmarkdown markdown shinyvalidate DT reactable esquisse cachem
+RUN install2.r languageserver renv remotes golem shinipsum httpgd shinyWidgets bslib rmarkdown markdown shinyvalidate DT reactable esquisse cachem devtools usethis fs glue rstudioapi
 RUN installGithub.r matt-dray/ActionSquirrel ColinFay/brochure ColinFay/glouton r-lib/gert RinteRface/truelle
 
 # install radian via python and pip3
