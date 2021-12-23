@@ -11,7 +11,7 @@
 add_shinylearning <- function(app_name, path = getwd(), open = TRUE, ...) {
   # define path variables
   app_path <- fs::path(path, app_name)
-
+  
   # remove current copy if it exists already
   if (fs::dir_exists(app_path)) {
     fs::dir_delete(app_path)
@@ -25,22 +25,26 @@ add_shinylearning <- function(app_name, path = getwd(), open = TRUE, ...) {
       app_path
   )
   fs::dir_copy(
-      system.file("templates", "page1", package = "shinylearning"),
-      app_path
+      system.file("templates", "page", package = "shinylearning"),
+      fs::path(app_path, "page1")
   )
+
   fs::file_copy(
       system.file("templates", "app.R", package = "shinylearning"), app_path
   )
 
   # populate template page1 app with app name as the title
-  tmp_contents <- xfun::read_utf8(fs::path(app_path, "page1", "page1.R"))
+  tmp_contents <- xfun::read_utf8(fs::path(app_path, "page1", "page.R"))
   filled_tmp <- whisker::whisker.render(
       tmp_contents,
-      data = list(app_title = app_name)
+      data = list(app_title = app_name, app_snapshot = 1)
   )
 
   # write filled template lines to app file
   cat(filled_tmp, file = fs::path(app_path, "page1", "page1.R"))
+
+  # remove placeholder file
+  fs::file_delete(fs::path(app_path, "page1", "page.R"))
 
   # create rstudio project file
   usethis::create_project(app_path, rstudio = TRUE, open = FALSE)

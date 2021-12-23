@@ -18,7 +18,7 @@ nav_links <- tagList(
 )
 
 # first application wrapper ----
-page_1 <- function() {
+page1 <- function() {
   page(
     href = "/",
     ui = function(request) {
@@ -36,4 +36,4 @@ page_1 <- function() {
 }
 
 # launch brochure app ----
-brochure::brochureApp(page_1())
+brochure::brochureApp(page1())
