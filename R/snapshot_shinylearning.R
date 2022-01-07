@@ -1,55 +1,60 @@
-snapshot_shinylearning <- function(path = getwd()) {
-  # determine how many sub-apps are present
-  #browser()
-  apps <- fs::dir_ls(path, type = "directory", regexp = ".*/page.*")
+#' Create new snapshot of the application
+#' @param path directory path to the application 
+#' @param use_current_snapshot Flag to use the current (or latest) snapshot of the 
+#'   application as the source for the next snapshot. If set to `FALSE`, you must
+#'   supply a valid snapshot name for the `snapshot_name` parameter.
+#' @param snapshot_name Optional character string for the name of the desired
+#' snapshot to use as the basis for the new snapshot. If no value is supplied,
+#' then by default it will use the current or latest snapshot available in the app.
+#' @param ... additional arguments to be used later
+#'
+#' @return invisibly the path of the new snapshot
 
+snapshot_shinylearning <- function(path = getwd(), snapshot_name = NULL, ...) {
+  # determine how many sub-apps are present
+  apps <- fs::dir_ls(path, type = "directory", regexp = ".*/page.*")
   n_apps <- length(apps)
 
-  # create dir for next app snapshot
-  #new_snapshot_dir <- fs::dir_create(fs::path(path, glue::glue("page{n_apps + 1}")))
-  
-  # copy files from current snapshot to the new snapshot
-  #current_files <- fs::dir_ls(fs::path(path, glue::glue("page{n_apps}")))
-
   # Create new directory for snapshot
+  if (is.null(snapshot_name)) {
+    current_snapshot_path <- fs::path(path, glue::glue("page{n_apps}"))
+    current_snapshot_script <- glue::glue("page{n_apps}.R")
+  } else {
+    current_snapshot_path <- fs::path(path, snapshot_name)
+    current_snapshot_script <- glue::glue("{snapshot_name}.R")
+  }
+
+  if (!fs::dir_exists(current_snapshot_path)) {
+    stop(glue::glue("Specified snapshot name {snapshot_name} does not exist!", call. = FALSE))
+  }
+
+  new_snapshot_path <- fs::path(path, glue::glue("page{n_apps + 1}"))
+  new_snapshot_script <- glue::glue("page{n_apps + 1}.R")
+
   fs::dir_copy(
-    fs::path(path, glue::glue("page{n_apps}")),
-    fs::path(path, glue::glue("page{n_apps + 1}"))
+    current_snapshot_path,
+    new_snapshot_path
   )
 
-  # TODO:
-  # - import the code for the previous snapshot via rlang
-  # - find the function names in the UI and server parts of module
-  # - change those to pageX_UI and pageX_server as appropriate
-  # - re-create the fucntion calls with the new function names and add the previous arguments and body of function code
-  # - write back out to a file
+  snapshot_contents <- rlang::parse_exprs(x = file(fs::path(current_snapshot_path, current_snapshot_script)))
 
-  # TODO: Make this dynamic based on user requesting a specific snapshot
-  #       of the app, or default to the latest or "current" snapshot
-  snapshot_contents <- rlang::parse_exprs(x = file("page1.R"))
-
-  # TODO: Create file name dynamically
-  fileConn <- file("new_file.R")
+  file_conn <- file(fs::path(new_snapshot_path, new_snapshot_script))
 
   new_file_contents <- purrr::map(snapshot_contents, ~{
     current_fxn_name <- .x[[2]]
-    #message(glue::glue("current_fxn_name is {current_fxn_name}"))
     fxn_suffix <- stringr::str_split(current_fxn_name, "_")[[1]][2]
-    #message(glue::glue("fxn suffix is {fxn_suffix}"))
-    lhs <- paste("page2", fxn_suffix, sep = "_")
+    lhs <- glue::glue("page{n_apps + 1}_{fxn_suffix}")
     rhs <- .x[[3]]
-    #message(glue::glue("rhs is {rhs}"))
     call <- rlang::lang("<-", lhs, rhs)
     call_str <- as.character(call)
-    #message(call_str)
     res <- c(call_str[[2]], call_str[[1]], call_str[[3]], "\n")
     return(res)
   })
 
   # convert back to character vector for writing to file
   new_file_char <- unlist(new_file_contents)
-  writeLines(new_file_char, con = fileConn, sep = " ")
-  close(fileConn)
+  writeLines(new_file_char, con = file_conn, sep = " ")
+  close(file_conn)
 
-  return(n_apps)
+  invisible(new_snapshot_path)
 }
