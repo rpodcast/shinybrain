@@ -4,7 +4,13 @@
 \alias{add_shinylearning}
 \title{Initialize fresh shiny learning app}
 \usage{
-add_shinylearning(app_name, path = getwd(), open = TRUE, ...)
+add_shinylearning(
+  app_name,
+  path = getwd(),
+  create_project = FALSE,
+  open = TRUE,
+  ...
+)
 }
 \arguments{
 \item{app_name}{string of the app name to use as the directory
@@ -12,6 +18,9 @@ to store application files}
 
 \item{path}{parent directory to store app files. Default is the
 current working directory}
+
+\item{create_project}{Flag to create an RStudio project file
+in the application directory. Default is FALSE.}
 
 \item{open}{Flag to open the project if using RStudio. Default
 is TRUE.}
