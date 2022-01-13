@@ -36,6 +36,12 @@ snapshot_shinylearning <- function(path = getwd(), snapshot_name = NULL, ...) {
     new_snapshot_path
   )
 
+  # rename the "previous" snapshot script to the new snapshot name
+  fs::file_move(
+    fs::path(new_snapshot_path, current_snapshot_script),
+    fs::path(new_snapshot_path, new_snapshot_script)
+  )
+
   snapshot_contents <- rlang::parse_exprs(x = file(fs::path(current_snapshot_path, current_snapshot_script)))
 
   file_conn <- file(fs::path(new_snapshot_path, new_snapshot_script))
