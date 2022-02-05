@@ -6,7 +6,9 @@ library(DT)
 library(ggplot2)
 
 # source module scripts ----
-source("page1/page1.R")
+# DO NOT MODIFY!
+module_files <- fs::dir_ls(".", regexp = "page*", recurse = TRUE, type = "file")
+purrr::walk(module_files, ~source(.x))
 
 # create navigation bar UI code ----
 nav_links <- tagList(
