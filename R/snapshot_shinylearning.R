@@ -51,7 +51,7 @@ snapshot_shinylearning <- function(path = getwd(), snapshot_name = NULL, ...) {
     fxn_suffix <- stringr::str_split(current_fxn_name, "_")[[1]][2]
     lhs <- glue::glue("page{n_apps + 1}_{fxn_suffix}")
     rhs <- .x[[3]]
-    call <- rlang::lang("<-", lhs, rhs)
+    call <- rlang::call2("<-", lhs, rhs)
     call_str <- as.character(call)
     res <- c(call_str[[2]], call_str[[1]], call_str[[3]], "\n")
     return(res)
