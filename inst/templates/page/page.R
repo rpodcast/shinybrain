@@ -1,5 +1,5 @@
 #' @param root_dir optional defintion of the root directory of this app
-page{{app_snapshot}}_ui <- function() {
+page{{app_snapshot}}_ui <- function(nav_links) {
     tagList(
         h1("{{app_title}}"),
         nav_links,

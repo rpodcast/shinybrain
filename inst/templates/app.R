@@ -28,7 +28,7 @@ page1 <- function() {
         tags$head(
           includeCSS("www/navigation.css")
         ),
-        page1_ui()
+        page1_ui(nav_links)
       )
     },
     server = function(input, output, session) {
