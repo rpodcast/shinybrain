@@ -1,8 +1,7 @@
-#' @param root_dir optional defintion of the root directory of this app
 page{{app_snapshot}}_ui <- function(nav_links) {
     tagList(
-        h1("{{app_title}}"),
         nav_links,
+        h1("{{app_title}}"),
         fluidRow(
           column(
             width = 12,
@@ -28,4 +27,21 @@ page{{app_snapshot}}_server <- function(input, output, session) {
   output$plot <- renderPlot({
     random_plot
   })
+}
+
+page{{app_snapshot}} <- function(nav_links) {
+  page(
+    href = "/page{{app_snapshot}}",
+    ui = function(request) {
+      tagList(
+        tags$head(
+          includeCSS("www/navigation.css")
+        ),
+        page{{app_snapshot}}_ui(nav_links)
+      )
+    },
+    server = function(input, output, session) {
+      page{{app_snapshot}}_server(input, output, session)
+    }
+  )
 }
