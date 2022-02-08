@@ -27,19 +27,39 @@ add_shinylearning <- function(
   fs::dir_create(app_path)
   # copy the template files to the directory
   fs::dir_copy(
-      system.file("templates", "www", package = "shinylearning"),
-      app_path
+    system.file("templates", "www", package = "shinylearning"),
+    app_path
   )
+
   fs::dir_copy(
-      system.file("templates", "page", package = "shinylearning"),
-      fs::path(app_path, "page1")
+    system.file("templates", "home", package = "shinylearning"),
+    fs::path(app_path, "home")
+  )
+
+  fs::dir_copy(
+    system.file("templates", "page", package = "shinylearning"),
+    fs::path(app_path, "page1")
   )
 
   fs::file_copy(
-      system.file("templates", "app.R", package = "shinylearning"), app_path
+    system.file("templates", "app.R", package = "shinylearning"), app_path
   )
 
-  # populate template page1 app with app name as the title
+  fs::file_copy(
+    system.file("templates", "shinylearning-utils.R", package = "shinylearning"), app_path
+  )
+
+  # populate template home app module with app name as title
+  tmp_contents <- xfun::read_utf8(fs::path(app_path, "home", "home.R"))
+  filled_tmp <- whisker::whisker.render(
+      tmp_contents,
+      data = list(app_title = app_name)
+  )
+
+  # write filled template lines to app file
+  cat(filled_tmp, file = fs::path(app_path, "home", "home.R"), append = FALSE)
+
+  # populate template page1 app module with app name as the title and number as app snapshot
   tmp_contents <- xfun::read_utf8(fs::path(app_path, "page1", "page.R"))
   filled_tmp <- whisker::whisker.render(
       tmp_contents,
@@ -52,12 +72,25 @@ add_shinylearning <- function(
   # remove placeholder file
   fs::file_delete(fs::path(app_path, "page1", "page.R"))
 
+  # populate template page1 function with number as app snapshot
+  tmp_contents <- xfun::read_utf8(fs::path(app_path, "page1", "page_function.R"))
+  filled_tmp <- whisker::whisker.render(
+      tmp_contents,
+      data = list(app_snapshot = 1)
+  )
+
+  # write filled template lines to app file
+  cat(filled_tmp, file = fs::path(app_path, "page1", "page1_function.R"))
+
+  # remove placeholder file
+  fs::file_delete(fs::path(app_path, "page1", "page_function.R"))
+
   # create rstudio project file if requested
   if (create_project) {
     usethis::create_project(app_path, rstudio = TRUE, open = FALSE)
     # open project if using RStudio and flag is TRUE
     # thank you {golem}!
-    
+
     if (isTRUE(open)) {
       if (rstudioapi::isAvailable() & rstudioapi::hasFun("openProject")) {
         rproj_file <- fs::path(app_path, glue::glue("{app_name}.Rproj"))
