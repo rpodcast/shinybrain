@@ -1,7 +1,6 @@
 page{{app_snapshot}}_ui <- function(nav_links) {
     tagList(
         nav_links,
-        h1("{{app_title}}"),
         fluidRow(
           column(
             width = 12,
