@@ -60,30 +60,11 @@ add_shinylearning <- function(
   cat(filled_tmp, file = fs::path(app_path, "home", "home.R"), append = FALSE)
 
   # populate template page1 app module with app name as the title and number as app snapshot
-  tmp_contents <- xfun::read_utf8(fs::path(app_path, "page1", "page.R"))
-  filled_tmp <- whisker::whisker.render(
-      tmp_contents,
-      data = list(app_title = app_name, app_snapshot = 1)
-  )
-
-  # write filled template lines to app file
-  cat(filled_tmp, file = fs::path(app_path, "page1", "page1.R"))
-
-  # remove placeholder file
-  fs::file_delete(fs::path(app_path, "page1", "page.R"))
+  fill_template(app_path, template_file = "page.R", app_snapshot = 1, output_file = "page1.R", delete_template = TRUE)
 
   # populate template page1 function with number as app snapshot
-  tmp_contents <- xfun::read_utf8(fs::path(app_path, "page1", "page_function.R"))
-  filled_tmp <- whisker::whisker.render(
-      tmp_contents,
-      data = list(app_snapshot = 1)
-  )
 
-  # write filled template lines to app file
-  cat(filled_tmp, file = fs::path(app_path, "page1", "page1_function.R"))
-
-  # remove placeholder file
-  fs::file_delete(fs::path(app_path, "page1", "page_function.R"))
+  fill_template(app_path, template_file = "page_function.R", app_snapshot = 1, output_file = "page1_function.R", delete_template = TRUE)
 
   # create rstudio project file if requested
   if (create_project) {
