@@ -36,6 +36,13 @@ snapshot_shinylearning <- function(path = getwd(), snapshot_name = NULL, ...) {
     new_snapshot_path
   )
 
+  # remove "brochure function" script file since we will re-generate it dynamically
+  fs::file_delete(
+    fs::path(new_snapshot_path,  glue::glue("page{n_apps}_function.R"))
+  )
+
+  fill_template(path, template_file = "page_function.R", app_snapshot = n_apps + 1, output_file = glue::glue("page{n_apps + 1}_function.R"), delete_template = TRUE)
+
   # rename the "previous" snapshot script to the new snapshot name
   fs::file_move(
     fs::path(new_snapshot_path, current_snapshot_script),
