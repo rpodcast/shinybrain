@@ -1,4 +1,4 @@
-fill_template <- function(app_path, template_file, output_file, app_snapshot = 1, delete_template = TRUE) {
+fill_template <- function(app_path, template_file, output_file, app_snapshot = 1, delete_template = TRUE, template_pkg_dir = "page") {
 
   
   # populate template file with app name as the title and number as app snapshot
@@ -7,7 +7,7 @@ fill_template <- function(app_path, template_file, output_file, app_snapshot = 1
   # copy over template file if it is not in app_path
   if (!fs::file_exists(template_path)) {
     fs::file_copy(
-      system.file("templates", template_file, package = "shinylearning"), app_path
+      system.file("templates", template_pkg_dir, template_file, package = "shinylearning"), template_path
     )
   }
 
