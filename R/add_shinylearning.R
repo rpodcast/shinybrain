@@ -18,6 +18,9 @@ add_shinylearning <- function(
   # define path variables
   app_path <- fs::path(path, app_name)
 
+  # define flags for future customization
+  create_homepage <- TRUE
+
   # remove current copy if it exists already
   if (fs::dir_exists(app_path)) {
     fs::dir_delete(app_path)
@@ -25,17 +28,8 @@ add_shinylearning <- function(
 
   # create directory in path with the app_name
   fs::dir_create(app_path)
+
   # copy the template files to the directory
-  fs::dir_copy(
-    system.file("templates", "www", package = "shinylearning"),
-    app_path
-  )
-
-  fs::dir_copy(
-    system.file("templates", "home", package = "shinylearning"),
-    fs::path(app_path, "home")
-  )
-
   fs::dir_copy(
     system.file("templates", "page", package = "shinylearning"),
     fs::path(app_path, "page1")
@@ -49,22 +43,38 @@ add_shinylearning <- function(
     system.file("templates", "shinylearning-utils.R", package = "shinylearning"), app_path
   )
 
-  # populate template home app module with app name as title
-  tmp_contents <- xfun::read_utf8(fs::path(app_path, "home", "home.R"))
-  filled_tmp <- whisker::whisker.render(
+  if (create_homepage) {
+    fs::dir_copy(
+      system.file("templates", "home", package = "shinylearning"),
+      fs::path(app_path, "home")
+    )
+
+    # populate template home app module with app name as title
+    tmp_contents <- xfun::read_utf8(fs::path(app_path, "home", "home.R"))
+    filled_tmp <- whisker::whisker.render(
       tmp_contents,
       data = list(app_title = app_name)
+    )
+
+    # write filled template lines to app file
+    cat(filled_tmp, file = fs::path(app_path, "home", "home.R"), append = FALSE)
+  }
+
+  # populate app.R with create_homepage value
+  tmp_contents <- xfun::read_utf8(fs::path(app_path, "app.R"))
+  filled_tmp <- whisker::whisker.render(
+    tmp_contents,
+    data = list(create_homepage = create_homepage)
   )
 
   # write filled template lines to app file
-  cat(filled_tmp, file = fs::path(app_path, "home", "home.R"), append = FALSE)
+  cat(filled_tmp, file = fs::path(app_path, "app.R"), append = FALSE)
 
   # populate template page1 app module with app name as the title and number as app snapshot
-  fill_template(app_path, template_file = "page.R", app_snapshot = 1, output_file = "page1.R", delete_template = TRUE)
+  fill_template(app_path, template_file = "page.R", app_title = app_name, app_snapshot = 1, output_file = "page1.R", delete_template = TRUE)
 
   # populate template page1 function with number as app snapshot
-
-  fill_template(app_path, template_file = "page_function.R", app_snapshot = 1, output_file = "page1_function.R", delete_template = TRUE)
+  fill_template(app_path, template_file = "page_function.R", app_title = app_name, app_snapshot = 1, output_file = "page1_function.R", delete_template = TRUE)
 
   # create rstudio project file if requested
   if (create_project) {
