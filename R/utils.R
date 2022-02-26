@@ -1,6 +1,5 @@
-fill_template <- function(app_path, template_file, output_file, app_snapshot = 1, delete_template = TRUE, template_pkg_dir = "page") {
+fill_template <- function(app_path, template_file, output_file, app_title, app_snapshot = 1, delete_template = TRUE, template_pkg_dir = "page") {
 
-  
   # populate template file with app name as the title and number as app snapshot
   template_path <- fs::path(app_path, glue::glue("page{app_snapshot}"), template_file)
 
@@ -15,7 +14,7 @@ fill_template <- function(app_path, template_file, output_file, app_snapshot = 1
   tmp_contents <- xfun::read_utf8(template_path)
   filled_tmp <- whisker::whisker.render(
       tmp_contents,
-      data = list(app_snapshot = app_snapshot)
+      data = list(app_title = app_title, app_snapshot = app_snapshot)
   )
 
   # write filled template lines to app file
