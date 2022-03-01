@@ -26,7 +26,7 @@ RUN apt-get update \
 
 # install R packages needed for VSCode interaction and package management
 RUN install2.r languageserver renv remotes golem shinipsum httpgd shinyWidgets bslib rmarkdown shinyvalidate DT reactable esquisse cachem gert
-RUN installGithub.r matt-dray/ActionSquirrel ColinFay/brochure ColinFay/glouton 
+RUN installGithub.r matt-dray/ActionSquirrel ColinFay/brochure ColinFay/glouton RinteRface/truelle
 
 # install radian via python and pip3
 RUN apt-get update \
@@ -36,6 +36,11 @@ RUN apt-get update \
 RUN pip3 install radian
 
 RUN echo "RENV_PATHS_CACHE=/renv/cache" >> /usr/local/lib/R/etc/Renviron
+
+# [Optional] Uncomment this section to add addtional system dependencies needed for project
+RUN apt-get update \
+    && export DEBIAN_FRONTEND=noninteractive \
+    && apt-get -y install --no-install-recommends libpulse0 libasound2 libasound2-plugins pulseaudio-utils
 
 # [Optional] Uncomment this section to add addtional system dependencies needed for project
 # RUN apt-get update \

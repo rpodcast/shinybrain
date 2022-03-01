@@ -1,11 +1,8 @@
 home <- function(nav_links) {
-  page(
+  brochure::page(
     href = "/",
     ui = function(request) {
       tagList(
-        tags$head(
-          includeCSS("www/navigation.css")
-        ),
         home_ui(nav_links)
       )
     },

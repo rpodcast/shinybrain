@@ -1,11 +1,14 @@
-home_ui <- function(nav_links) {
-  tagList(
-    nav_links,
-    h1("{{app_title}}"),
-    fluidRow(
-      column(
-        width = 12,
+home_ui <- function(nav_links, bg = "#0062cc") {
+  bslib::page_navbar(
+    title = "{{app_title}}",
+    bg = bg,
+    !!!nav_links,
+    footer = div(
+      fluidRow(
+        column(
+          width = 12,
           shiny::includeMarkdown("home/introduction.md")
+        )
       )
     )
   )
