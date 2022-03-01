@@ -10,9 +10,18 @@ services:
       - /home/${USER}/.ssh:/home/${USER}/.ssh
       - ${RENV_PATHS_CACHE_HOST}:${RENV_PATHS_CACHE_CONTAINER}
       - ${VOLUME_PATH}/.devcontainer/rstudio_config_dir:/home/${USER}/.config/rstudio
+      - /etc/alsa:/etc/alsa
+      - /usr/share/alsa:/usr/share/alsa
+      - /run/user/1000/pulse/native:/run/user/1000/pulse/native
+      - /media/media_drive1/obs_files/audio_assets/soundboard_files:/soundboard_files
     restart:
       unless-stopped
     ports:
       - ${LOCAL_PORT}:8787
     env_file: .env
+    cap_add:
+      - SYS_PTRACE
+    security_opt:
+      - seccomp:unconfined
+    
 
