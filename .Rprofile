@@ -15,4 +15,4 @@ play_sound <- function(sound_dir = "/soundboard_files", custom_sink = "SoundBoar
   invisible(TRUE)
 }
 
-options(error = play_sound)
+#options(error = play_sound)
