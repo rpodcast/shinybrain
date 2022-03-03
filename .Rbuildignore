@@ -1,3 +1,7 @@
 ^shinylearning\.Rproj$
 ^\.Rproj\.user$
-prototyping$
+^prototyping$
+^\.devcontainer$
+^\.dockerignore$
+^\.lintr$
+^\.vscode$

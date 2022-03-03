@@ -4,20 +4,25 @@
 \alias{snapshot_shinylearning}
 \title{Create new snapshot of the application}
 \usage{
-snapshot_shinylearning(path = getwd(), snapshot_name = NULL, ...)
+snapshot_shinylearning(
+  path = getwd(),
+  use_current_snapshot = TRUE,
+  snapshot_name = NULL,
+  ...
+)
 }
 \arguments{
 \item{path}{directory path to the application}
+
+\item{use_current_snapshot}{Flag to use the current (or latest) snapshot of the
+application as the source for the next snapshot. If set to \code{FALSE}, you must
+supply a valid snapshot name for the \code{snapshot_name} parameter.}
 
 \item{snapshot_name}{Optional character string for the name of the desired
 snapshot to use as the basis for the new snapshot. If no value is supplied,
 then by default it will use the current or latest snapshot available in the app.}
 
 \item{...}{additional arguments to be used later}
-
-\item{use_current_snapshot}{Flag to use the current (or latest) snapshot of the
-application as the source for the next snapshot. If set to \code{FALSE}, you must
-supply a valid snapshot name for the \code{snapshot_name} parameter.}
 }
 \value{
 invisibly the path of the new snapshot

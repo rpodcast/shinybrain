@@ -1,6 +1,6 @@
 #' Create new snapshot of the application
-#' @param path directory path to the application 
-#' @param use_current_snapshot Flag to use the current (or latest) snapshot of the 
+#' @param path directory path to the application
+#' @param use_current_snapshot Flag to use the current (or latest) snapshot of the
 #'   application as the source for the next snapshot. If set to `FALSE`, you must
 #'   supply a valid snapshot name for the `snapshot_name` parameter.
 #' @param snapshot_name Optional character string for the name of the desired
@@ -10,7 +10,7 @@
 #'
 #' @return invisibly the path of the new snapshot
 
-snapshot_shinylearning <- function(path = getwd(), snapshot_name = NULL, ...) {
+snapshot_shinylearning <- function(path = getwd(), use_current_snapshot = TRUE, snapshot_name = NULL, ...) {
   # determine how many sub-apps are present
   apps <- fs::dir_ls(path, type = "directory", regexp = ".*/page.*")
   n_apps <- length(apps)
