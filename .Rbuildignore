@@ -5,3 +5,4 @@
 ^\.dockerignore$
 ^\.lintr$
 ^\.vscode$
+^README\.Rmd$
