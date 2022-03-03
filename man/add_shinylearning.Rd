@@ -5,25 +5,25 @@
 \title{Initialize fresh shiny learning app}
 \usage{
 add_shinylearning(
-  app_name,
-  path = getwd(),
-  create_project = FALSE,
-  open = TRUE,
+  path,
+  app_name = basename(path),
+  overwrite = FALSE,
+  open = FALSE,
   ...
 )
 }
 \arguments{
-\item{app_name}{string of the app name to use as the directory
-to store application files}
+\item{path}{Name of the folder to create the app in.
+This will also be used as the app name.}
 
-\item{path}{parent directory to store app files. Default is the
-current working directory}
+\item{app_name}{App name to use. By default, {shinylearning}
+uses \code{basename(path)}. If \code{path == '.'} & \code{app_name} is
+not explicitly set, then \code{basename(getwd())} will be used.}
 
-\item{create_project}{Flag to create an RStudio project file
-in the application directory. Default is FALSE.}
+\item{overwrite}{Boolean. Should the already existing app
+be overwritten?}
 
-\item{open}{Flag to open the project if using RStudio. Default
-is TRUE.}
+\item{open}{Boolean. Open the created app project?}
 
 \item{...}{additional arguments to be used later}
 }
