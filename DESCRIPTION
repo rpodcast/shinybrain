@@ -30,7 +30,9 @@ Imports:
     whisker,
     xfun
 Suggests: 
+    datasauRus,
+    plotly,
     testthat (>= 3.0.0)
 Config/testthat/edition: 3
-Remotes:  
+Remotes: 
     ColinFay/brochure
