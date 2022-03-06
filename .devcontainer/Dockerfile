@@ -3,7 +3,7 @@
 # licence: MIT
 ###################################################################################################################
 
-FROM rocker/r-ver:4.1.0
+FROM rocker/r-ver:4.1.2
 
 # Options for setup script
 ARG INSTALL_ZSH="false"
@@ -34,7 +34,9 @@ RUN apt-get update \
 
 # install R packages needed for VSCode interaction and package management
 RUN install2.r languageserver renv remotes golem shinipsum httpgd shinyWidgets bslib rmarkdown markdown shinyvalidate DT reactable esquisse cachem devtools usethis fs glue rstudioapi
-RUN installGithub.r matt-dray/ActionSquirrel ColinFay/brochure ColinFay/glouton r-lib/gert RinteRface/truelle
+RUN installGithub.r matt-dray/ActionSquirrel ColinFay/glouton r-lib/gert RinteRface/truelle
+RUN installGithub.r ColinFay/brochure
+RUN install2.r datasauRus plotly bs4Dash
 
 # install radian via python and pip3
 RUN apt-get update \
