@@ -1,4 +1,4 @@
-page{{app_snapshot}}_ui <- function() {
+page1_ui <- function() {
   tagList(
     fluidRow(
       column(
@@ -18,7 +18,7 @@ page{{app_snapshot}}_ui <- function() {
   )
 }
 
-page{{app_snapshot}}_server <- function(input, output, session) {
+page1_server <- function(input, output, session) {
   
   random_plot <- shinipsum::random_ggplot("bar")
 
@@ -27,10 +27,10 @@ page{{app_snapshot}}_server <- function(input, output, session) {
   })
 }
 
-page{{app_snapshot}}_demo <- function() {
-  ui <- fluidPage(page{{app_snapshot}}_ui())
+page1_demo <- function() {
+  ui <- fluidPage(page1_ui())
   server <- function(input, output, session) {
-    page{{app_snapshot}}_server(input, output, session)
+    page1_server(input, output, session)
   }
 
   shinyApp(ui, server)

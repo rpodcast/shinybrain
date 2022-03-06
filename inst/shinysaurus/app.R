@@ -5,7 +5,7 @@ library(shinipsum)
 library(DT)
 library(ggplot2)
 
-app_title <- "{{app_title}}"
+app_title <- "shinysaurus"
 bg <- "#18cc00"
 
 # source utility scripts ----

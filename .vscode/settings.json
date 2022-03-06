@@ -1,4 +1,5 @@
 {
     "powermode.presets": "fireworks",
-    "powermode.explosionDuration": 500
+    "powermode.explosionDuration": 500,
+    "powermode.explosions.duration": 500
 }
