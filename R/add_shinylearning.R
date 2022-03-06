@@ -89,7 +89,7 @@ add_shinylearning <- function(
   tmp_contents <- xfun::read_utf8(fs::path(path, "app.R"))
   filled_tmp <- whisker::whisker.render(
     tmp_contents,
-    data = list(create_homepage = create_homepage)
+    data = list(app_title = app_name)
   )
 
   # write filled template lines to app file
@@ -97,9 +97,6 @@ add_shinylearning <- function(
 
   # populate template page1 app module with app name as the title and number as app snapshot
   fill_template(path, template_file = "page.R", app_title = app_name, app_snapshot = 1, output_file = "page1.R", delete_template = TRUE)
-
-  # populate template page1 function with number as app snapshot
-  fill_template(path, template_file = "page_function.R", app_title = app_name, app_snapshot = 1, output_file = "page1_function.R", delete_template = TRUE)
 
   cli_alert_success("Copied app templates")
 
