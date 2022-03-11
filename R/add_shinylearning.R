@@ -57,6 +57,9 @@ add_shinylearning <- function(
     overwrite = TRUE
   )
 
+  # temp fix to get rid of demo file
+  fs::file_delete(fs::path(path, "page1", "page_demo.R"))
+
   fs::file_copy(
     system.file("templates", "app.R", package = "shinylearning"), 
     path,
