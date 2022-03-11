@@ -36,17 +36,12 @@ snapshot_shinylearning <- function(path = getwd(), use_current_snapshot = TRUE, 
     new_snapshot_path
   )
 
-  #fill_template(path, template_file = "page_function.R", app_snapshot = n_apps + 1, output_file = glue::glue("page{n_apps + 1}_function.R"), delete_template = TRUE)
-
   # rename the "previous" snapshot script to the new snapshot name
   fs::file_move(
     fs::path(new_snapshot_path, current_snapshot_script),
     fs::path(new_snapshot_path, new_snapshot_script)
   )
 
-  # TODO: need to fix the dynamic update of the page_demo() function
-  # the rhs has reference to page_ui() so this needs to be fixed
-  # easy approach is to have template syntax much like the page template function in inst/templates
   snapshot_contents <- rlang::parse_exprs(x = file(fs::path(current_snapshot_path, current_snapshot_script)))
 
   file_conn <- file(fs::path(new_snapshot_path, new_snapshot_script))
@@ -54,19 +49,41 @@ snapshot_shinylearning <- function(path = getwd(), use_current_snapshot = TRUE, 
   new_file_contents <- purrr::map(snapshot_contents, ~{
     current_fxn_name <- .x[[2]]
     fxn_suffix <- stringr::str_split(current_fxn_name, "_")[[1]][2]
-    if (fxn_suffix == "demo") browser()
-    lhs <- glue::glue("page{n_apps + 1}_{fxn_suffix}")
-    rhs <- .x[[3]]
-    call <- rlang::call2("<-", lhs, rhs)
-    call_str <- as.character(call)
-    res <- c(call_str[[2]], call_str[[1]], call_str[[3]], "\n")
+    if (fxn_suffix == "demo") {
+      res <- NULL
+    } else {
+      lhs <- glue::glue("page{n_apps + 1}_{fxn_suffix}")
+      rhs <- .x[[3]]
+      call <- rlang::call2("<-", lhs, rhs)
+      call_str <- as.character(call)
+      res <- c(call_str[[2]], call_str[[1]], call_str[[3]], "\n")
+    }
+    
     return(res)
   })
 
+  # remove the NULL entry
+  new_file_contents <- purrr::compact(new_file_contents)
+
   # convert back to character vector for writing to file
   new_file_char <- unlist(new_file_contents)
+
+  # use template demo function file
+  # to re-create demo code
+  template_path <- fs::path(system.file("templates", "page", "page_demo.R", package = "shinylearning"))
+
+  tmp_contents <- xfun::read_utf8(template_path)
+  filled_tmp <- whisker::whisker.render(
+      tmp_contents,
+      data = list(app_snapshot = n_apps + 1)
+  )
+
   writeLines(new_file_char, con = file_conn, sep = " ")
   close(file_conn)
+
+  cat(filled_tmp, file = fs::path(new_snapshot_path, new_snapshot_script), append = TRUE, sep = "\n\n")
+
+  fs::file_delete(fs::path(new_snapshot_path, "page_demo.R"))
 
   invisible(new_snapshot_path)
 }
