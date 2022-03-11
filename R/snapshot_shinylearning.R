@@ -36,12 +36,7 @@ snapshot_shinylearning <- function(path = getwd(), use_current_snapshot = TRUE, 
     new_snapshot_path
   )
 
-  # remove "brochure function" script file since we will re-generate it dynamically
-  fs::file_delete(
-    fs::path(new_snapshot_path,  glue::glue("page{n_apps}_function.R"))
-  )
-
-  fill_template(path, template_file = "page_function.R", app_snapshot = n_apps + 1, output_file = glue::glue("page{n_apps + 1}_function.R"), delete_template = TRUE)
+  #fill_template(path, template_file = "page_function.R", app_snapshot = n_apps + 1, output_file = glue::glue("page{n_apps + 1}_function.R"), delete_template = TRUE)
 
   # rename the "previous" snapshot script to the new snapshot name
   fs::file_move(
@@ -49,6 +44,9 @@ snapshot_shinylearning <- function(path = getwd(), use_current_snapshot = TRUE, 
     fs::path(new_snapshot_path, new_snapshot_script)
   )
 
+  # TODO: need to fix the dynamic update of the page_demo() function
+  # the rhs has reference to page_ui() so this needs to be fixed
+  # easy approach is to have template syntax much like the page template function in inst/templates
   snapshot_contents <- rlang::parse_exprs(x = file(fs::path(current_snapshot_path, current_snapshot_script)))
 
   file_conn <- file(fs::path(new_snapshot_path, new_snapshot_script))
@@ -56,6 +54,7 @@ snapshot_shinylearning <- function(path = getwd(), use_current_snapshot = TRUE, 
   new_file_contents <- purrr::map(snapshot_contents, ~{
     current_fxn_name <- .x[[2]]
     fxn_suffix <- stringr::str_split(current_fxn_name, "_")[[1]][2]
+    if (fxn_suffix == "demo") browser()
     lhs <- glue::glue("page{n_apps + 1}_{fxn_suffix}")
     rhs <- .x[[3]]
     call <- rlang::call2("<-", lhs, rhs)
