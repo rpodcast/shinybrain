@@ -19,7 +19,7 @@ module_files <- c("home/home.R", module_files)
 purrr::walk(module_files, ~source(.x))
 
 # create navigation bar UI code ----
-page_ids <- ls(name = ".GlobalEnv", pattern = "^page\\d+$")
+page_ids <- fs::dir_ls(".", regexp = "page*", type = "directory")
 page_ids <- c("home", page_ids)
 
 
