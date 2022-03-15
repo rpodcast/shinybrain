@@ -28,7 +28,8 @@ Imports:
     rstudioapi,
     stringr,
     whisker,
-    xfun
+    xfun,
+    formatR
 Suggests: 
     datasauRus,
     plotly,
