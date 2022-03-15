@@ -37,6 +37,7 @@ RUN install2.r languageserver renv remotes golem shinipsum httpgd shinyWidgets b
 RUN installGithub.r matt-dray/ActionSquirrel ColinFay/glouton r-lib/gert RinteRface/truelle
 RUN installGithub.r ColinFay/brochure
 RUN install2.r datasauRus plotly bs4Dash
+RUN install2.r formatR
 
 # install radian via python and pip3
 RUN apt-get update \
