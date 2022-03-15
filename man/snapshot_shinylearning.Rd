@@ -8,6 +8,7 @@ snapshot_shinylearning(
   path = getwd(),
   use_current_snapshot = TRUE,
   snapshot_name = NULL,
+  style_code = TRUE,
   ...
 )
 }
@@ -21,6 +22,9 @@ supply a valid snapshot name for the \code{snapshot_name} parameter.}
 \item{snapshot_name}{Optional character string for the name of the desired
 snapshot to use as the basis for the new snapshot. If no value is supplied,
 then by default it will use the current or latest snapshot available in the app.}
+
+\item{style_code}{Flag to re-style the new snapshot code to meet tidy formatting
+principles. Recommended to use the default value of \code{TRUE}.}
 
 \item{...}{additional arguments to be used later}
 }

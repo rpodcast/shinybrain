@@ -6,11 +6,13 @@
 #' @param snapshot_name Optional character string for the name of the desired
 #' snapshot to use as the basis for the new snapshot. If no value is supplied,
 #' then by default it will use the current or latest snapshot available in the app.
+#' @param style_code Flag to re-style the new snapshot code to meet tidy formatting
+#'   principles. Recommended to use the default value of `TRUE`.
 #' @param ... additional arguments to be used later
 #'
 #' @return invisibly the path of the new snapshot
 
-snapshot_shinylearning <- function(path = getwd(), use_current_snapshot = TRUE, snapshot_name = NULL, ...) {
+snapshot_shinylearning <- function(path = getwd(), use_current_snapshot = TRUE, snapshot_name = NULL, style_code = TRUE, ...) {
   # determine how many sub-apps are present
   apps <- fs::dir_ls(path, type = "directory", regexp = ".*/page.*")
   n_apps <- length(apps)
@@ -77,13 +79,20 @@ snapshot_shinylearning <- function(path = getwd(), use_current_snapshot = TRUE, 
       tmp_contents,
       data = list(app_snapshot = n_apps + 1)
   )
-
+  
   writeLines(new_file_char, con = file_conn, sep = " ")
   close(file_conn)
 
   cat(filled_tmp, file = fs::path(new_snapshot_path, new_snapshot_script), append = TRUE, sep = "\n\n")
 
-  fs::file_delete(fs::path(new_snapshot_path, "page_demo.R"))
+  if (style_code) {
+    formatR::tidy_file(
+        fs::path(new_snapshot_path, new_snapshot_script),
+        args.newline = TRUE,
+        indent = 2,
+        width.cutoff = I(30)
+      )
+  }
 
   invisible(new_snapshot_path)
 }
