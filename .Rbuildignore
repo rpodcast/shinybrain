@@ -6,3 +6,4 @@
 ^\.lintr$
 ^\.vscode$
 ^README\.Rmd$
+^LICENSE\.md$
