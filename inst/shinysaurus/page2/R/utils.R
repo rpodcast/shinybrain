@@ -1,22 +1,18 @@
 useBox <- function() {
-  if (!requireNamespace(package = "shinydashboard")) {
-    message("package 'shinydashboard' is required to run this function")
+  if (!requireNamespace(package = "bs4Dash")) {
+    message("package 'bs4Dash' is required to run this function")
   }
 
-  deps <- htmltools::findDependencies(shinydashboard::dashboardPage(
-    header = shinydashboard::dashboardHeader(),
-    sidebar = shinydashboard::dashboardSidebar(),
-    body = shinydashboard::dashboardBody()
+  deps <- htmltools::findDependencies(bs4Dash::bs4DashPage(
+    header = bs4Dash::bs4DashNavbar(),
+    sidebar = bs4Dash::bs4DashSidebar(),
+    body = bs4Dash::bs4DashBody()
   ))
   htmltools::attachDependencies(tags$div(), value = deps)
 }
 
-my_dashboard_box <- function(title, status, ...) {
+my_dashboard_box <- function(...) {
   tagList(
-    shinydashboard::box(
-      ...,
-      title = title, 
-      status = status
-    ) 
+    bs4Dash::box(...) 
   )
 }

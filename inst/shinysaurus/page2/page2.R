@@ -4,6 +4,9 @@ page2_ui <- function() {
     my_dashboard_box(
       title = "My box", 
       status = "danger",
+      collapsible = TRUE,
+      collapsed = FALSE,
+      maximizable = TRUE,
       width = 12,
       fluidRow(
         h2("Explore"),
