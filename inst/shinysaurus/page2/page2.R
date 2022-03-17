@@ -1,18 +1,24 @@
 page2_ui <- function() {
   tagList(
-    fluidRow(
-      h2("Explore"),
-      column(
-        width = 6,
-        plotOutput("plot")
-      ),
-      column(
-        width = 6,
-        shinipsum::random_DT(
-          nrow = 10,
-          ncol = 3
-        )
-      ),
+    useBox(),
+    my_dashboard_box(
+      title = "My box", 
+      status = "danger",
+      width = 12,
+      fluidRow(
+        h2("Explore"),
+        column(
+          width = 6,
+          plotOutput("plot")
+        ),
+        column(
+          width = 6,
+          shinipsum::random_DT(
+            nrow = 10,
+            ncol = 3
+          )
+        ),
+      )
     ),
     fluidRow(
       h2("Animate"),
