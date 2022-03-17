@@ -1,0 +1,2 @@
+# set this variable to either true or false
+USE_SOUND=false

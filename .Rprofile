@@ -15,4 +15,7 @@ play_sound <- function(sound_dir = "/soundboard_files", custom_sink = "SoundBoar
   invisible(TRUE)
 }
 
-#options(error = play_sound)
+if (Sys.getenv("USE_SOUND") == "true") {
+  options(error = play_sound)
+}
+

@@ -6,3 +6,4 @@
 .DS_Store
 prototyping/*
 !prototyping/README.md
+.Renviron
