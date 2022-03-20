@@ -27,7 +27,8 @@ Imports:
     stringr,
     whisker,
     xfun,
-    formatR
+    formatR,
+    withr
 Suggests: 
     datasauRus,
     plotly,

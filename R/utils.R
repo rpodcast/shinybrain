@@ -60,3 +60,13 @@ app_page <- function(nav_links, page_id = "page1", title = "myapp", bg = "#0062c
     }
   )
 }
+
+brainpower <- function(path = getwd()) {
+  withr::with_dir(path, shiny::runApp())
+}
+
+brainsnap <- function(snapshot_name, path = getwd()) {
+  r_scripts <- fs::dir_ls(fs::path(path, snapshot_name), recurse = TRUE, type = "file")
+  purrr::walk(r_scripts, ~source(.x))
+  rlang::exec(paste(snapshot_name, "demo", sep = "_"))
+}
