@@ -1,22 +1,22 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# shinylearning
+# shinybrain
 
 <!-- badges: start -->
 
 <!-- badges: end -->
 
-The goal of shinylearning is to …
+The goal of shinybrain is to …
 
 ## Installation
 
-You can install the development version of shinylearning from
+You can install the development version of shinybrain from
 [GitHub](https://github.com/) with:
 
 ``` r
 # install.packages("remotes")
-remotes::install_github("rpodcast/shinylearning")
+remotes::install_github("rpodcast/shinybrain")
 ```
 
 ## Example
