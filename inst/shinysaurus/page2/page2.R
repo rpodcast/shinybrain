@@ -1,15 +1,30 @@
 page2_ui <- function() {
+  # obtain names of available datasauRus data sets
+  ds_names <- unique(datasauRus::datasaurus_dozen$dataset)
   tagList(
     useBox(),
+    fluidRow(
+      column(
+        width = 12,
     my_dashboard_box(
-      title = "My box", 
-      status = "danger",
+          title = "Explore", 
+          status = "success",
       collapsible = TRUE,
       collapsed = FALSE,
       maximizable = TRUE,
       width = 12,
       fluidRow(
-        h2("Explore"),
+            column(
+              width = 4,
+              selectInput(
+                "explore_dataset",
+                "Select your dataset",
+                choices = ds_names,
+                selected = ds_names[1]
+              )
+            )
+          ),
+          fluidRow(
         column(
           width = 6,
           plotOutput("plot")
@@ -66,6 +81,8 @@ page2_ui <- function() {
           value = 100
         ),
         plotOutput("plot2")
+          )
+        )
       )
     )
   )
