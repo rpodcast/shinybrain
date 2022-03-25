@@ -1,9 +1,9 @@
 Package: shinybrain
-Title: What the Package Does (One Line, Title Case)
-Version: 0.0.0.9004
+Title: Illustrate the evolution of a Shiny application from prototype to finished product
+Version: 0.1
 Authors@R: 
     person("Eric", "Nantz","theRcast@gmail.com", role = c("aut", "cre"))
-Description: What the package does (one paragraph).
+Description: The goal of shinybrain is to provide a simple procedure to create multiple snapshots of an overall Shiny application. The ability to show the development journey inside a single overall application is a great benefit to educating others on the iterative nature of Shiny application development.
 License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
