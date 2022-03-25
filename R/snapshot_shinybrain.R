@@ -12,7 +12,7 @@
 #'
 #' @return invisibly the path of the new snapshot
 
-snapshot_shinylearning <- function(path = getwd(), use_current_snapshot = TRUE, snapshot_name = NULL, style_code = TRUE, ...) {
+snapshot_shinybrain <- function(path = getwd(), use_current_snapshot = TRUE, snapshot_name = NULL, style_code = TRUE, ...) {
   # determine how many sub-apps are present
   apps <- fs::dir_ls(path, type = "directory", regexp = ".*/page.*")
   n_apps <- length(apps)

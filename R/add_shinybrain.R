@@ -1,7 +1,7 @@
-#' Initialize fresh shiny learning app
+#' Initialize fresh shinybrain app
 #' @param path Name of the folder to create the app in.
 #'   This will also be used as the app name.
-#' @param app_name App name to use. By default, {shinylearning}
+#' @param app_name App name to use. By default, {shinybrain}
 #'   uses `basename(path)`. If `path == '.'` & `app_name` is
 #'   not explicitly set, then `basename(getwd())` will be used.
 #' @param overwrite Boolean. Should the already existing app
@@ -12,14 +12,14 @@
 #' @import cli
 #'
 #' @return invisibly the path to new application
-add_shinylearning <- function(
+add_shinybrain <- function(
   path,
   app_name = basename(path), 
   overwrite = FALSE,
   open = FALSE, 
   ...) {
 
-  cat_rule("Creating your shinylearning app")
+  cat_rule("Creating your shinybrain app")
 
   # define flags for future customization
   create_homepage <- TRUE
@@ -30,7 +30,7 @@ add_shinylearning <- function(
       stop(
         paste(
           "App directory already exists.\n",
-          "Set `add_shinylearning(overwrite = TRUE)` to overwrite anyway.\n",
+          "Set `add_shinybrain(overwrite = TRUE)` to overwrite anyway.\n",
           "Make sure you back up any important files first!"
         ),
         call. = FALSE
@@ -52,7 +52,7 @@ add_shinylearning <- function(
 
   # copy the template files to the directory
   fs::dir_copy(
-    system.file("templates", "page", package = "shinylearning"),
+    system.file("templates", "page", package = "shinybrain"),
     fs::path(path, "page1"),
     overwrite = TRUE
   )
@@ -61,18 +61,18 @@ add_shinylearning <- function(
   fs::file_delete(fs::path(path, "page1", "page_demo.R"))
 
   fs::file_copy(
-    system.file("templates", "app.R", package = "shinylearning"), 
+    system.file("templates", "app.R", package = "shinybrain"), 
     path,
     overwrite = TRUE
   )
 
   # fs::file_copy(
-  #   system.file("templates", "shinylearning-utils.R", package = "shinylearning"), app_path
+  #   system.file("templates", "shinybrain-utils.R", package = "shinybrain"), app_path
   # )
 
   if (create_homepage) {
     fs::dir_copy(
-      system.file("templates", "home", package = "shinylearning"),
+      system.file("templates", "home", package = "shinybrain"),
       fs::path(path, "home"),
       overwrite = TRUE
     )
@@ -107,7 +107,7 @@ add_shinylearning <- function(
 
   cat_line(
     paste0(
-      "A new shinylearning app named ",
+      "A new shinybrain app named ",
       app_name,
       " was created at ",
       normalizePath(path),
