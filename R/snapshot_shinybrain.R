@@ -8,11 +8,20 @@
 #' then by default it will use the current or latest snapshot available in the app.
 #' @param style_code Flag to re-style the new snapshot code to meet tidy formatting
 #'   principles. Recommended to use the default value of `TRUE`.
+#' @param code_width number of columns for each line in code files
+#'   produced by the snapshot. Ignored if `style_code` is disabled. Default
+#'   value is 30.
 #' @param ... additional arguments to be used later
 #'
 #' @return invisibly the path of the new snapshot
 
-snapshot_shinybrain <- function(path = getwd(), use_current_snapshot = TRUE, snapshot_name = NULL, style_code = TRUE, ...) {
+snapshot_shinybrain <- function(
+    path = getwd(),
+    use_current_snapshot = TRUE,
+    snapshot_name = NULL,
+    style_code = TRUE,
+    code_width = 30,
+    ...) {
   # determine how many sub-apps are present
   apps <- fs::dir_ls(path, type = "directory", regexp = ".*/page.*")
   n_apps <- length(apps)
@@ -79,7 +88,7 @@ snapshot_shinybrain <- function(path = getwd(), use_current_snapshot = TRUE, sna
       tmp_contents,
       data = list(app_snapshot = n_apps + 1)
   )
-  
+
   writeLines(new_file_char, con = file_conn, sep = " ")
   close(file_conn)
 
@@ -90,7 +99,7 @@ snapshot_shinybrain <- function(path = getwd(), use_current_snapshot = TRUE, sna
         fs::path(new_snapshot_path, new_snapshot_script),
         args.newline = TRUE,
         indent = 2,
-        width.cutoff = I(30)
+        width.cutoff = I(code_width)
       )
   }
 

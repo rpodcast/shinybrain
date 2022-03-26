@@ -9,6 +9,7 @@ snapshot_shinybrain(
   use_current_snapshot = TRUE,
   snapshot_name = NULL,
   style_code = TRUE,
+  code_width = 30,
   ...
 )
 }
@@ -25,6 +26,10 @@ then by default it will use the current or latest snapshot available in the app.
 
 \item{style_code}{Flag to re-style the new snapshot code to meet tidy formatting
 principles. Recommended to use the default value of \code{TRUE}.}
+
+\item{code_width}{number of columns for each line in code files
+produced by the snapshot. Ignored if \code{style_code} is disabled. Default
+value is 30.}
 
 \item{...}{additional arguments to be used later}
 }
