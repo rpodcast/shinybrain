@@ -12,63 +12,17 @@ page1_ui <- function() {
           nrow = 10,
           ncol = 3
         )
-      ),
-    ),
-    fluidRow(
-      h2("Animate"),
-      selectInput(
-        "datasets",
-        "Data Set",
-        choices = c("A", "B", "C"),
-        selected = c("A", "B", "C"),
-        multiple = TRUE
-      ),
-      numericInput(
-        "iterations",
-        "Iterations",
-        value = 1000
-      ),
-      numericInput(
-        "pert",
-        "pert",
-        value = 0.5
-      ),
-      numericInput(
-        "metamers",
-        "metamers",
-        value = 150
-      ),
-      actionButton(
-        "animate",
-        "Animate"
-      )
-    ),
-    fluidRow(
-      column(
-        width = 12,
-        numericInput(
-          "time_frames",
-          "Time btw Frames",
-          value = 100
-        ),
-        plotOutput("plot2")
       )
     )
   )
 }
 
 page1_server <- function(input, output, session) {
-  
-  random_plot <- shinipsum::random_ggplot("bar")
 
-  random_plot2 <- shinipsum::random_ggplot("point")
+  random_plot <- shinipsum::random_ggplot("bar")
 
   output$plot <- renderPlot({
     random_plot
-  })
-
-  output$plot2 <- renderPlot({
-    random_plot2
   })
 }
 
@@ -79,4 +33,8 @@ page1_demo <- function() {
   }
 
   shinyApp(ui, server)
+}
+
+page1_theme <- function() {
+  bslib::bs_theme(bootswatch = "materia")
 }

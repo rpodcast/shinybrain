@@ -21,3 +21,7 @@ home_demo <- function() {
 
   shinyApp(ui_server)
 }
+
+home_theme <- function() {
+  bslib::bs_theme(bootswatch = "superhero")
+}

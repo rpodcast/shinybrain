@@ -6,101 +6,73 @@ page2_ui <- function() {
     fluidRow(
       column(
         width = 12,
-    my_dashboard_box(
-          title = "Explore", 
+        my_dashboard_box(
+          title = "Explore",
           status = "success",
-      collapsible = TRUE,
-      collapsed = FALSE,
-      maximizable = TRUE,
-      width = 12,
-      fluidRow(
+          collapsible = TRUE,
+          collapsed = FALSE,
+          maximizable = FALSE,
+          width = 12,
+          fluidRow(
             column(
-              width = 4,
-              selectInput(
-                "explore_dataset",
-                "Select your dataset",
-                choices = ds_names,
-                selected = ds_names[1]
+              width = 10,
+              fluidRow(
+                column(
+                  width = 8,
+                  selectInput(
+                    "data_select",
+                    "Select your dataset",
+                    choices = ds_names,
+                    selected = ds_names[1]
+                  )
+                )
+              ),
+              fluidRow(
+                column(
+                  width = 6,
+                  plotOutput("ds_plot")
+                ),
+                column(
+                  width = 4,
+                  DT::dataTableOutput("ds_table")
+                )
               )
             )
-          ),
-          fluidRow(
-        column(
-          width = 6,
-          plotOutput("plot")
-        ),
-        column(
-          width = 6,
-          shinipsum::random_DT(
-            nrow = 10,
-            ncol = 3
-          )
-        ),
-      )
-    ),
-    fluidRow(
-      h2("Animate"),
-      selectInput(
-        "datasets",
-        "Data Set",
-        choices = c(
-          "A", "B",
-          "C"
-        ),
-        selected = c(
-          "A", "B",
-          "C"
-        ),
-        multiple = TRUE
-      ),
-      numericInput(
-        "iterations",
-        "Iterations",
-        value = 1000
-      ),
-      numericInput(
-        "pert", "pert",
-        value = 0.5
-      ),
-      numericInput(
-        "metamers",
-        "metamers",
-        value = 150
-      ),
-      actionButton(
-        "animate",
-        "Animate"
-      )
-    ),
-    fluidRow(
-      column(
-        width = 12,
-        numericInput(
-          "time_frames",
-          "Time btw Frames",
-          value = 100
-        ),
-        plotOutput("plot2")
           )
         )
       )
     )
   )
 }
+
 page2_server <- function(input, output, session) {
-  random_plot <- shinipsum::random_ggplot("bar")
-  random_plot2 <- shinipsum::random_ggplot("point")
-  output$plot <- renderPlot(
-    {
-      random_plot
-    }
-  )
-  output$plot2 <- renderPlot(
-    {
-      random_plot2
-    }
-  )
+
+  # reactive for data frame selected
+  data_df <- reactive({
+    req(input$data_select)
+    extract_dataset(input$data_select)
+  })
+
+  # exploration plot
+  output$ds_plot <- renderPlot({
+    req(data_df())
+    p <- ggplot(data = data_df(), aes(x = x, y = y)) +
+      geom_point() +
+      scale_x_continuous(breaks = seq(0, 100, by = 10)) +
+      scale_y_continuous(breaks = seq(0, 100, by = 10))
+
+    p
+  })
+
+  # exploration table
+  output$ds_table <- DT::renderDataTable({
+    req(data_df())
+    data_df()
+  },
+  rownames = FALSE,
+  options = list(dom = 'tip'))
 }
+
 page2_demo <- function() {
   ui <- fluidPage(page2_ui())
   server <- function(
@@ -114,4 +86,8 @@ page2_demo <- function() {
   }
 
   shinyApp(ui, server)
+}
+
+page2_theme <- function() {
+  bslib::bs_theme(bootswatch = "sketchy")
 }
