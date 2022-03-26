@@ -34,7 +34,7 @@ fill_template <- function(app_path, template_file, output_file, app_title, app_s
 #' @param bg color of the navigation bar
 #' @return list produced by `brochure::page`
 #' @export
-app_page <- function(nav_links, page_id = "page1", title = "myapp", bg = "#0062cc") {
+app_page <- function(nav_links, custom_theme, page_id = "page1", title = "myapp", bg = "#0062cc") {
   if (page_id == "home") {
     href <- "/"
   } else {
@@ -48,8 +48,9 @@ app_page <- function(nav_links, page_id = "page1", title = "myapp", bg = "#0062c
         bslib::page_navbar(
           title = title,
           bg = bg,
+          theme = custom_theme,
           !!!nav_links,
-          footer = div(
+          div(
             rlang::exec(paste(page_id, "ui", sep = "_"))
           )
         )
@@ -61,11 +62,11 @@ app_page <- function(nav_links, page_id = "page1", title = "myapp", bg = "#0062c
   )
 }
 
-brainpower <- function(path = getwd()) {
+brain_power <- function(path = getwd()) {
   withr::with_dir(path, shiny::runApp())
 }
 
-brainsnap <- function(snapshot_name, path = getwd()) {
+brain_snap <- function(snapshot_name, path = getwd()) {
   r_scripts <- fs::dir_ls(fs::path(path, snapshot_name), recurse = TRUE, type = "file")
   purrr::walk(r_scripts, ~source(.x))
   rlang::exec(paste(snapshot_name, "demo", sep = "_"))
