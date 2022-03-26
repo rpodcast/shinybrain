@@ -21,10 +21,18 @@ purrr::walk(module_files, ~source(.x))
 # create navigation bar UI code ----
 page_ids <- fs::dir_ls(".", regexp = "page*", type = "directory")
 page_ids <- c("home", page_ids)
-
-
 nav_links <- purrr::map(page_ids, ~gen_navitems(path = ".", active_tab = .x))
+theme_list <- purrr::map(page_ids, ~rlang::call2(glue::glue("{p}_theme", p = .x)))
 
 # launch brochure app ----
-page_list <- purrr::map2(page_ids, nav_links, ~rlang::call2("app_page", nav_links = .y, page_id = .x, title = app_title, bg = bg))
+arg_list <- list(
+  page_ids,
+  nav_links,
+  theme_list,
+  app_title,
+  bg
+)
+
+#page_list <- purrr::map2(page_ids, nav_links, ~rlang::call2("app_page", nav_links = .y, page_id = .x, title = app_title, bg = bg))
+page_list <- purrr::pmap(arg_list, ~rlang::call2("app_page", nav_links = ..2, page_id = ..1, custom_theme = ..3, title = ..4, bg = ..5))
 do.call(brochure::brochureApp, page_list)
