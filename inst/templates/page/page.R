@@ -19,7 +19,7 @@ page{{app_snapshot}}_ui <- function() {
 }
 
 page{{app_snapshot}}_server <- function(input, output, session) {
-  
+
   random_plot <- shinipsum::random_ggplot("bar")
 
   output$plot <- renderPlot({
@@ -34,4 +34,8 @@ page{{app_snapshot}}_demo <- function() {
   }
 
   shinyApp(ui, server)
+}
+
+page{{app_snapshot}}_theme <- function() {
+  bslib::bs_theme(bootswatch = "default")
 }
