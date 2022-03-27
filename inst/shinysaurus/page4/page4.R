@@ -3,7 +3,21 @@ page4_ui <- function() {
     datasauRus::datasaurus_dozen$dataset
   )
   tagList(
-    useBox(), fluidRow(
+    useBox(), 
+    fluidRow(
+      column(
+        width = 12,
+        my_dashboard_box(
+          title = "Introduction",
+          status = "success",
+          collapsible = TRUE,
+          collapsed = FALSE,
+          closable = TRUE,
+          shiny::includeMarkdown("docs/explore.md")
+        )
+      )
+    ),
+    fluidRow(
       column(
         width = 12, my_dashboard_box(
           title = "Explore",
@@ -15,32 +29,28 @@ page4_ui <- function() {
           column(
             width = 12,
             fluidRow(
-            column(
-              width = 4,
-              selectInput(
-              "data_select",
-              "Select your dataset",
-              choices = ds_names,
-              selected = ds_names[1]
-            )
+              column(
+                width = 4,
+                selectInput(
+                "data_select",
+                "Select your dataset",
+                choices = ds_names,
+                selected = ds_names[1]
+              )
             )
           ),
-            fluidRow(
-                bs4Dash::bs4InfoBoxOutput(
-                "box_x",
-                width = 4
-              ),
-            # column(
-            #   width = 4,
-            #   uiOutput("box_x")
-            # ),
-            column(
-              width = 4,
-              uiOutput("box_y")
+          fluidRow(
+            bs4Dash::bs4InfoBoxOutput(
+              "box_x",
+              width = 4
             ),
-            column(
-              width = 4,
-              uiOutput("box_cor")
+            bs4Dash::bs4InfoBoxOutput(
+              "box_y",
+              width = 4
+            ),
+            bs4Dash::bs4InfoBoxOutput(
+              "box_cor",
+              width = 4
             )
           ),
             fluidRow(
@@ -140,69 +150,74 @@ page4_server <- function(input, output, session) {
 
   output$box_x <- bs4Dash::renderbs4InfoBox({
     req(data_df())
+    if (!is.null(df_sub())) {
+      df <- df_sub()
+    } else {
       df <- data_df()
-      mean_val <- round(
-        mean(df$x),
-        1
-      )
-      sd_val <- round(
-        sd(df$x),
-        2
-      )
-
-      bs4Dash::bs4InfoBox(
-        title = "Mean (SD) of X",
-        color = "success",
-        gradient = FALSE,
-        value = glue::glue(
-          "Mean (SD) of X: {mean_val} ({sd_val})"
-        ),
-        icon = shiny::icon("table")
-      )
-  })
-  # output$box_x <- renderUI(
-  #   {
-  #     req(data_df())
-  #     df <- data_df()
-  #     mean_val <- round(
-  #       mean(df$x),
-  #       1
-  #     )
-  #     sd_val <- round(
-  #       sd(df$x),
-  #       2
-  #     )
-  #     glue::glue(
-  #       "Mean (SD) of X: {mean_val} ({sd_val})"
-  #     )
-  #   }
-  # )
-  output$box_y <- renderUI(
-    {
-      req(data_df())
-      df <- data_df()
-      mean_val <- round(
-        mean(df$y),
-        1
-      )
-      sd_val <- round(
-        sd(df$y),
-        2
-      )
-      glue::glue(
-        "Mean (SD) of Y: {mean_val} ({sd_val})"
-      )
     }
-  )
-  output$box_cor <- renderUI(
-    {
-      req(data_df())
+    mean_val <- round(
+      mean(df$x),
+      1
+    )
+    sd_val <- round(
+      sd(df$x),
+      2
+    )
+
+    bs4Dash::bs4InfoBox(
+      title = "Mean (SD) of X",
+      color = "success",
+      fill = TRUE,
+      value = glue::glue(
+        "{mean_val} ({sd_val})"
+      ),
+      icon = shiny::icon("table")
+    )
+  })
+
+  output$box_y <- bs4Dash::renderbs4InfoBox({
+    req(data_df())
+    if (!is.null(df_sub())) {
+      df <- df_sub()
+    } else {
       df <- data_df()
+    }
+    mean_val <- round(
+      mean(df$y),
+      1
+    )
+    sd_val <- round(
+      sd(df$y),
+      2
+    )
+    bs4Dash::bs4InfoBox(
+      title = "Mean (SD) of Y",
+      color = "success",
+      fill = TRUE,
+      value = glue::glue(
+        "{mean_val} ({sd_val})"
+      ),
+      icon = shiny::icon("table")
+    )
+  })
+  output$box_cor <- bs4Dash::renderbs4InfoBox({
+      req(data_df())
+      if (!is.null(df_sub())) {
+      df <- df_sub()
+    } else {
+      df <- data_df()
+    }
       cor_val <- round(
         cor(x = df$x, y = df$y),
         2
       )
-      glue::glue("Correlation: {cor_val}")
+      bs4Dash::bs4InfoBox(
+      title = "Correlation",
+      color = "success",
+      fill = TRUE,
+      value = round(cor(x = df$x, y = df$y), 2),
+      icon = shiny::icon("table")
+      )
     }
   )
   output$ds_plot <- plotly::renderPlotly(

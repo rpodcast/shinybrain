@@ -17,6 +17,7 @@ bg <- "#007bff"
 
 # source module scripts ----
 # DO NOT MODIFY!
+browser()
 module_files <- fs::dir_ls(".", regexp = "page*", recurse = TRUE, type = "file")
 module_files <- c("home/home.R", module_files)
 
