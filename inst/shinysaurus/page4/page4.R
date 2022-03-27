@@ -13,7 +13,7 @@ page4_ui <- function() {
           maximizable = FALSE,
           width = 12, fluidRow(
           column(
-            width = 10,
+            width = 12,
             fluidRow(
             column(
               width = 4,
@@ -26,10 +26,14 @@ page4_ui <- function() {
             )
           ),
             fluidRow(
-            column(
-              width = 4,
-              uiOutput("box_x")
-            ),
+                bs4Dash::bs4InfoBoxOutput(
+                "box_x",
+                width = 4
+              ),
+            # column(
+            #   width = 4,
+            #   uiOutput("box_x")
+            # ),
             column(
               width = 4,
               uiOutput("box_y")
@@ -45,7 +49,7 @@ page4_ui <- function() {
               plotly::plotlyOutput("ds_plot", height = "600px")
             ),
             column(
-              width = 4,
+              width = 6,
               DT::dataTableOutput("ds_table")
             )
           )
@@ -133,9 +137,9 @@ page4_server <- function(input, output, session) {
       extract_dataset(input$data_select)
     }
   )
-  output$box_x <- renderUI(
-    {
-      req(data_df())
+
+  output$box_x <- bs4Dash::renderbs4InfoBox({
+    req(data_df())
       df <- data_df()
       mean_val <- round(
         mean(df$x),
@@ -145,11 +149,34 @@ page4_server <- function(input, output, session) {
         sd(df$x),
         2
       )
-      glue::glue(
-        "Mean (SD) of X: {mean_val} ({sd_val})"
+
+      bs4Dash::bs4InfoBox(
+        title = "Mean (SD) of X",
+        color = "success",
+        gradient = FALSE,
+        value = glue::glue(
+          "Mean (SD) of X: {mean_val} ({sd_val})"
+        ),
+        icon = shiny::icon("table")
       )
-    }
-  )
+  })
+  # output$box_x <- renderUI(
+  #   {
+  #     req(data_df())
+  #     df <- data_df()
+  #     mean_val <- round(
+  #       mean(df$x),
+  #       1
+  #     )
+  #     sd_val <- round(
+  #       sd(df$x),
+  #       2
+  #     )
+  #     glue::glue(
+  #       "Mean (SD) of X: {mean_val} ({sd_val})"
+  #     )
+  #   }
+  # )
   output$box_y <- renderUI(
     {
       req(data_df())
@@ -295,7 +322,7 @@ page4_demo <- function() {
 
 page4_theme <- function() {
   bslib::bs_theme(
-    bootswatch = "spacelab",
+    bootswatch = "default",
     font_scale = NULL,
     `enable-gradients` = TRUE,
     `enable-shadows` = TRUE

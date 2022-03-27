@@ -32,6 +32,8 @@ render_data_graph <- function(df, register_select = TRUE, ...) {
     df,
     x = ~x,
     y = ~y,
+    type = "scatter",
+    mode = "markers",
     customdata = seq(1, nrow(df)),
     source = "A"
   ) %>%
@@ -49,7 +51,7 @@ render_data_graph <- function(df, register_select = TRUE, ...) {
 }
 
 render_animation_graph <- function(metamer_df, metamer_sum, frame = 100) {
-  base <- plot_ly(metamer_df,  x = ~x, y = ~y) %>%
+  base <- plot_ly(metamer_df,  x = ~x, y = ~y, type = "scatter", mode = "markers") %>%
     add_markers(frame = ~.metamer) %>%
     add_text(x = 90, y = 95, frame = ~.metamer, text = ~mean_x_print, data = metamer_sum, showlegend = FALSE) %>%
     add_text(x = 90, y = 93, frame = ~.metamer, text = ~mean_y_print, data = metamer_sum, showlegend = FALSE) %>%

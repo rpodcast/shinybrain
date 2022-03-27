@@ -10,7 +10,7 @@ library(metamer)
 library(plotly)
 
 app_title <- "shinysaurus"
-bg <- "#18cc00"
+bg <- "#007bff"
 
 # source utility scripts ----
 #source("shinylearning-utils.R", local = TRUE)

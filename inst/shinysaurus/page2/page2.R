@@ -89,5 +89,5 @@ page2_demo <- function() {
 }
 
 page2_theme <- function() {
-  bslib::bs_theme(bootswatch = "sketchy")
+  bslib::bs_theme(bootswatch = "default")
 }

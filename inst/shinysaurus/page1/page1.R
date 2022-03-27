@@ -36,5 +36,5 @@ page1_demo <- function() {
 }
 
 page1_theme <- function() {
-  bslib::bs_theme(bootswatch = "materia")
+  bslib::bs_theme(bootswatch = "default")
 }

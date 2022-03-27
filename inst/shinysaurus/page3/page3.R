@@ -228,5 +228,5 @@ page3_demo <- function() {
 }
 
 page3_theme <- function() {
-  bslib::bs_theme(bootswatch = "cerulean")
+  bslib::bs_theme(bootswatch = "default")
 }
