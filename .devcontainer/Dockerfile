@@ -38,6 +38,7 @@ RUN installGithub.r matt-dray/ActionSquirrel ColinFay/glouton r-lib/gert RinteRf
 RUN installGithub.r ColinFay/brochure
 RUN install2.r datasauRus plotly bs4Dash
 RUN install2.r formatR
+RUN install2.r sortable metamer shinyalert
 
 # install radian via python and pip3
 RUN apt-get update \
