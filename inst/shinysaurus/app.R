@@ -17,8 +17,8 @@ bg <- "#007bff"
 
 # source module scripts ----
 # DO NOT MODIFY!
-browser()
-module_files <- fs::dir_ls(".", regexp = "page*", recurse = TRUE, type = "file")
+module_dirs <- fs::dir_ls(".", regexp = "page*", recurse = FALSE, type = "directory")
+module_files <- fs::dir_ls(module_dirs, glob = "page*.R", recurse = TRUE, type = "file")
 module_files <- c("home/home.R", module_files)
 
 purrr::walk(module_files, ~source(.x))

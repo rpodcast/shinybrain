@@ -13,7 +13,102 @@ page4_ui <- function() {
           collapsible = TRUE,
           collapsed = FALSE,
           closable = TRUE,
-          shiny::includeMarkdown("docs/explore.md")
+          width = 12,
+          fluidRow(
+            column(
+              width = 12,
+              shiny::includeMarkdown("page4/docs/explore.md")
+            )
+          ),
+          fluidRow(
+            column(
+              width = 4,
+              bs4Dash::bs4UserCard(
+                title = bs4Dash::bs4UserDescription(
+                  title = "Eric Nantz",
+                  image = "https://shinydevseries-assets.us-east-1.linodeobjects.com/pic_with_r_logo_github.jpg",
+                  subtitle = "Application Developer"
+                ),
+                status = "info",
+                width = 12,
+                
+                bs4Dash::bs4ListGroup(
+                  width = 12,
+                  type = "action",
+                  bs4Dash::bs4ListGroupItem(
+                    tagList(shiny::icon("home"), " shinydevseries.com"),
+                    href = "https://shinydevseries.com"
+                  ),
+                  bs4Dash::bs4ListGroupItem(
+                    tagList(shiny::icon("twitter"), " @thercast"),
+                    href = "https://twitter.com/thercast"
+                  ),
+                  bs4Dash::bs4ListGroupItem(
+                    tagList(shiny::icon("github"), " @rpodcast"),
+                    href = "https://github.com/rpodcast"
+                  )
+                )
+              )
+            ),
+            column(
+              width = 4,
+              bs4Dash::bs4UserCard(
+                title = bs4Dash::bs4UserDescription(
+                  title = "Elio Campitelli",
+                  image = "https://shinydevseries-assets.us-east-1.linodeobjects.com/elio_campitelli_pic.jpeg",
+                  subtitle = "metamer package author"
+                ),
+                status = "info",
+                width = 12,
+                
+                bs4Dash::bs4ListGroup(
+                  width = 12,
+                  type = "action",
+                  bs4Dash::bs4ListGroupItem(
+                    tagList(shiny::icon("home"), " eliocamp.github.io"),
+                    href = "https://eliocamp.github.io/codigo-r/en/2019/01/statistical-metamerism"
+                  ),
+                  bs4Dash::bs4ListGroupItem(
+                    tagList(shiny::icon("twitter"), " @d_olivaw"),
+                    href = "https://twitter.com/d_olivaw"
+                  ),
+                  bs4Dash::bs4ListGroupItem(
+                    tagList(shiny::icon("github"), " @eliocamp"),
+                    href = "https://github.com/eliocamp"
+                  )
+                )
+              )
+            ),
+            column(
+              width = 4,
+              bs4Dash::bs4UserCard(
+                title = bs4Dash::bs4UserDescription(
+                  title = "Steph Locke",
+                  image = "https://shinydevseries-assets.us-east-1.linodeobjects.com/stephlocke.jpg",
+                  subtitle = "datasauRus package author"
+                ),
+                status = "info",
+                width = 12,
+                
+                bs4Dash::bs4ListGroup(
+                  width = 12,
+                  type = "action",
+                  bs4Dash::bs4ListGroupItem(
+                    tagList(shiny::icon("home"), " itsalocke.com"),
+                    href = "https://itsalocke.com"
+                  ),
+                  bs4Dash::bs4ListGroupItem(
+                    tagList(shiny::icon("twitter"), " @theStephLocke"),
+                    href = "https://twitter.com/theStephLocke"
+                  ),
+                  bs4Dash::bs4ListGroupItem(
+                    tagList(shiny::icon("github"), " @stephlocke"),
+                    href = "https://github.com/stephlocke"
+                  )
+                )
+              )
+            )
+          )
         )
       )
     ),
@@ -55,11 +150,11 @@ page4_ui <- function() {
           ),
             fluidRow(
             column(
-              width = 6,
+              width = 8,
               plotly::plotlyOutput("ds_plot", height = "600px")
             ),
             column(
-              width = 6,
+              width = 4,
               DT::dataTableOutput("ds_table")
             )
           )
@@ -78,7 +173,7 @@ page4_ui <- function() {
             width = 12,
             fluidRow(
             column(
-              width = 6,
+              width = 12,
               bucket_list(
               header = NULL,
               group_name = "bucket_list_group",
@@ -93,7 +188,9 @@ page4_ui <- function() {
                 text = "To here"
               )
             )
+            )
             ),
+            fluidRow(
             column(
               width = 4,
               numericInput(
@@ -121,7 +218,7 @@ page4_ui <- function() {
               "Animate"
             )
             )
-          ),
+            ),
             fluidRow(
             column(
               width = 12,
@@ -260,9 +357,12 @@ page4_server <- function(input, output, session) {
         res <- df_sub()
       }
 
-      return(res)
-    }, rownames = FALSE, options = list(dom = "tip")
-  )
+      DT::datatable(
+        res,
+        rownames = FALSE,
+        options = list(dom = "tp"),
+      ) %>% DT::formatRound(columns = c('x', 'y'), digits = 1)
+    })
   metamer_df <- reactive({
     # show modal to say something is happening
     shinyalert::shinyalert(
